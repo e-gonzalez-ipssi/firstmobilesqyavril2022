@@ -51,11 +51,9 @@ class detailState extends State<detailPage> {
           ),
         ),
         // liste des messages éxistant
-        RaisedButton(
+        ElevatedButton(
           onPressed: sendMessage,
-          color: Colors.blue,
           child: Text('Send'),
-          textColor: Colors.white,
         ),
         // list of message
       ],
