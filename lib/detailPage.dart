@@ -12,7 +12,13 @@ class detailPage extends StatefulWidget {
 }
 
 class detailState extends State<detailPage> {
-  late String message;
+  var msgController = TextEditingController();
+
+  void sendMessage() {
+    print(msgController.text);
+    msgController.clear();
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -27,22 +33,22 @@ class detailState extends State<detailPage> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         TextField(
+          controller: msgController,
           decoration: InputDecoration(
             hintText: "Taper votre message",
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(20),
             ),
           ),
-          onChanged: (value) {
-            setState(() {
-              message = value;
-              // envoyer a la bd
-              // reset la value du textfield
-              // get la bd
-            });
-          },
         ),
         // liste des messages éxistant
+        RaisedButton(
+          onPressed: sendMessage,
+          color: Colors.blue,
+          child: Text('Send'),
+          textColor: Colors.white,
+        ),
+        // list of message
       ],
     );
   }
