@@ -15,7 +15,16 @@ class detailState extends State<detailPage> {
   var msgController = TextEditingController();
 
   void sendMessage() {
+    //get message
     print(msgController.text);
+    // get current user
+    // get user to send
+
+    // send message to firebase
+
+    // get messages from firebase
+
+    // clear textfield
     msgController.clear();
   }
 
