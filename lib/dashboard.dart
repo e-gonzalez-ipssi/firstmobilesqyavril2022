@@ -6,9 +6,9 @@ import 'package:firstapplicationsqyavril2022/model/utilisateur.dart';
 import 'package:firstapplicationsqyavril2022/widgets/myDrawer.dart';
 import 'package:flutter/material.dart';
 
-class DashBoard extends StatefulWidget{
+class DashBoard extends StatefulWidget {
   String uid;
-  DashBoard({required  this.uid});
+  DashBoard({required this.uid});
 
   @override
   State<StatefulWidget> createState() {
@@ -21,14 +21,14 @@ class DashBoardState extends State<DashBoard>{
   @override
   Widget build(BuildContext context) {
 
+
     return Scaffold(
       drawer: Container(
         height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width/1.5,
+        width: MediaQuery.of(context).size.width / 1.5,
         color: Colors.blue,
         child: myDrawer(),
       ),
-
       appBar: AppBar(
         title: const Text("Mes contacts"),
       ),
@@ -45,8 +45,7 @@ class DashBoardState extends State<DashBoard>{
     );
   }
 
-
-  Widget bodyPage(){
+  Widget bodyPage() {
     return StreamBuilder<QuerySnapshot>(
       stream: FirestoreHelper().fire_user.snapshots(),
       builder: (context, snapshot){
