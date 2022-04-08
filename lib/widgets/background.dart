@@ -19,7 +19,7 @@ class backgroundState extends State<Background> with SingleTickerProviderStateMi
     controller = AnimationController(
         vsync: this,
       duration: Duration(seconds: 10)
-    )..repeat();
+    )..repeat(reverse: true);
     super.initState();
   }
 
@@ -40,13 +40,13 @@ class backgroundState extends State<Background> with SingleTickerProviderStateMi
 
   Widget bodyPage(){
     return TweenAnimationBuilder<double>(
-      tween: Tween<double>(begin: 0,end:150),
+      tween: Tween<double>(begin: 0,end:120),
       duration: Duration(seconds:8),
-      curve: Curves.elasticOut,
+      curve: Curves.bounceInOut,
       child: Container(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
-          color: Colors.red,
+          color: Colors.amber,
         ),
 
       builder: (context, value, child) {

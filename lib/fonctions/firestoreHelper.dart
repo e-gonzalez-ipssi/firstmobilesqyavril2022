@@ -10,10 +10,12 @@ class FirestoreHelper {
   final fire_user = FirebaseFirestore.instance.collection("Users");
   final fire_messages = FirebaseFirestore.instance.collection("Messages");
   final fire_storage = FirebaseStorage.instance;
+  //final fire_message = FirebaseFirestore.instance.collection("Message");
+  final fire_conversation = FirebaseFirestore.instance.collection('Conversations');
+
 
   //Methode pour l'inscription
-  Future register(
-      String mail, String password, String nom, String prenom) async {
+  Future register(String mail, String password, String nom, String prenom) async {
     UserCredential resultat = await auth.createUserWithEmailAndPassword(
         email: mail, password: password);
     String uid = resultat.user!.uid;
@@ -28,7 +30,7 @@ class FirestoreHelper {
         await auth.signInWithEmailAndPassword(email: mail, password: password);
   }
 
-  //Méthode pour enregistrer dans la base de donnée
+  //Méthode pour enregistrer dans la base de données
   addUser(String uid, Map<String, dynamic> map) {
     fire_user.doc(uid).set(map);
   }
@@ -52,4 +54,51 @@ class FirestoreHelper {
     String chemin = await download.ref.getDownloadURL();
     return chemin;
   }
+
+  sendMessage(String texte, Utilisateur to, Utilisateur from) {
+    DateTime date = DateTime.now();
+    Map<String, dynamic> map = {
+      'from': from.uid,
+      'to': to.uid,
+      'texte': texte,
+      'sendmessage': date
+    };
+    String idDate = date.microsecondsSinceEpoch.toString();
+    addMessage(map, getMessageRef(from.uid, to.uid, idDate));
+    addConversation(
+        getConversation(from.uid, to, texte, date), from.uid);
+    addConversation(
+        getConversation(to.uid, from, texte, date), to.uid);
+  }
+
+  Map<String, dynamic> getConversation(
+      String from, Utilisateur to, String texte, DateTime date) {
+    Map<String, dynamic> map = to.toMap();
+    map['from'] = from;
+    map['lastmessage'] = texte;
+    map['sendmessage'] = date;
+    map['to'] = to.uid;
+
+    return map;
+  }
+
+  String getMessageRef(String from, String to, String date) {
+    String resultat = "";
+    List<String> liste = [from, to];
+    liste.sort((a, b) => a.compareTo(b));
+    for (var x in liste) {
+      resultat += x + "+";
+    }
+    resultat = resultat + date;
+    return resultat;
+  }
+
+  addMessage(Map<String, dynamic> map, String uid) {
+    fire_messages.doc(uid).set(map);
+  }
+
+  addConversation(Map<String, dynamic> map, String uid) {
+    fire_conversation.doc(uid).set(map);
+  }
+
 }

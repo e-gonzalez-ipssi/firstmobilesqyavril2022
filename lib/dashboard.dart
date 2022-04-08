@@ -8,23 +8,19 @@ import 'package:flutter/material.dart';
 
 class DashBoard extends StatefulWidget{
   String uid;
-  
   DashBoard({required  this.uid});
-  
-  
+
   @override
   State<StatefulWidget> createState() {
-  
     return DashBoardState();
   }
-
 }
 
 class DashBoardState extends State<DashBoard>{
+
   @override
   Widget build(BuildContext context) {
-    print(monProfil.uid);
-   
+
     return Scaffold(
       drawer: Container(
         height: MediaQuery.of(context).size.height,
@@ -34,9 +30,18 @@ class DashBoardState extends State<DashBoard>{
       ),
 
       appBar: AppBar(
-        title: const Text("Ma Nouvelle page"),
+        title: const Text("Mes contacts"),
       ),
-      body: bodyPage(),
+        body: Stack(
+          children: [
+            Center(
+              child: Container(
+                padding: const EdgeInsets.all(20),
+                child:  bodyPage(),
+              ),
+            )
+          ],
+        )
     );
   }
 
@@ -54,14 +59,13 @@ class DashBoardState extends State<DashBoard>{
             itemCount: documents.length,
             itemBuilder: (context,index){
               Utilisateur user = Utilisateur(documents[index]);
-              if(monProfil.uid == user.uid){
-                return Container();
-              }
-              return Card(
-                elevation: 5.0,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                child: ListTile(
-                  leading: Hero(
+
+              if(monProfil.uid != user.uid){
+                return Card(
+                  elevation: 5.0,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                  child: ListTile(
+                    leading: Hero(
                       tag: user.uid,
                       child: Container(
                         height : 50,
@@ -73,30 +77,28 @@ class DashBoardState extends State<DashBoard>{
                             )
                         ),
                       ),
+                    ),
+                    title: Text("${user.prenom} ${user.nom}"),
+                    onTap: (){
+                      Navigator.push(context,MaterialPageRoute(
+                          builder:(context){
+                            return detailPage(
+                              monProfil: monProfil,
+                              user: user,
+                            );
+                          }
+                      ));
+                    },
                   ),
-
-
-
-                title: Text("${user.prenom} ${user.nom}"),
-                  onTap: (){
-                  Navigator.push(context,MaterialPageRoute(
-                    builder:(context){
-                      return detailPage(user:user);
-                    }
-                  ));
-                  },
-
-              ),
-
-              );
-              
-              
-
+                );
+              }
+              else{
+                return Container();
+              }
             }
             );
         }
       }
       );
   }
-
 }

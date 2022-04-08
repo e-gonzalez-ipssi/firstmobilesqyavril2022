@@ -30,9 +30,9 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.deepOrange,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Super chat'),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -63,38 +63,30 @@ late String password;
 late String uid;
 late Animation animation;
 late AnimationController controller;
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     controller = AnimationController(
-        vsync: this,
+      vsync: this,
       duration: const Duration(seconds: 3),
       reverseDuration: const Duration(seconds :5),
-
     );
-    controller.repeat();
-
-
+    controller.repeat(reverse: true);
     animation = Tween<double>(begin: 150, end: 200).animate(controller);
   }
+
   @override
   void dispose() {
-    // TODO: implement dispose
     controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-     
       appBar: AppBar(
-        
         centerTitle: true,
-       
-    
         title: Text(widget.title),
       ),
       body: Stack(
@@ -104,104 +96,15 @@ late AnimationController controller;
             child: Container(
               padding: const EdgeInsets.all(20),
               child:  bodyPage(),
-
-
-            )
-            ,
+            ),
           )
-
         ],
       )
-
-
-
-      
-    
     );
   }
 
   Widget bodyPage(){
-    return 
-    
-    /*const Text('coucou',
-    style: TextStyle(
-      fontSize: 30,
-      color: Colors.blue
-      ),
-);
-     Container(
-       height: 300,
-       width: 250,
-       //color: Colors.red,
-       decoration: const BoxDecoration(
-         shape: BoxShape.circle,
-         color: Colors.blue
-       ),
-     );
-     
-    
-    const TextField(
-      obscureText: true,
-
-    );
-    
-    SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      
-      child: Row(
-
-  
-      children: [
-        Container(
-          height: 200,
-          width: 200,
-          color: Colors.yellow,
-          ),
-           Container(
-          height: 200,
-          width: 200,
-          color: Colors.red,
-          ),
-           Container(
-          height: 200,
-          width: 200,
-          color: Colors.cyan,
-          ),
-           Container(
-          height: 200,
-          width: 200,
-          color: Colors.green,
-          ),
-           Container(
-          height: 200,
-          width: 200,
-          color: Colors.purple,
-          ),
-           Container(
-          height: 200,
-          width: 200,
-          color: Colors.yellow,
-          ),
-
-      ],
-
-    ),
-    );
-    
-    Card(
-      elevation: 5.0,
-      child: Text("Mon text est élevé"),
-    );
-    
-    ElevatedButton(
-      
-      onPressed: (){
-        print("J'ai appuyé sur le bouton");
-      }, 
-      child: const Text("Connexion")
-      );
-  */
-  Column(
+    return Column(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
       AnimatedBuilder(
@@ -211,29 +114,32 @@ late AnimationController controller;
             return Transform.scale(
               scale: controller.value,
               child: child,
-
             );
-
           },
         child: Container(
-          height: 250,
-          width: 250,
+          height: 200,
+          width: 200,
           decoration: const BoxDecoration(
               shape: BoxShape.circle,
               image: DecorationImage(
-                image: AssetImage("assets/alien_gangsta_by_raben_aas.jpg"),
+                image: NetworkImage("https://st4.depositphotos.com/7863750/22380/i/600/depositphotos_223805744-stock-photo-the-super-cat-is-wearing.jpg"),
                 fit: BoxFit.fill,
               )
           ),
         ),
       ),
 
+      const Text('Se connecter',
+        style: TextStyle(
+        fontSize: 25,
+        ),
+      ),
 
       const SizedBox(height: 10,),
       TextField(
         decoration: InputDecoration(
           prefixIcon: const Icon(Icons.mail),
-         hintText: "Taper votre adresse mail",
+         hintText: "Adresse mail",
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(20),
         ),
@@ -243,14 +149,13 @@ late AnimationController controller;
           setState(() {
             mail = value;
           });
-          
         },
       ),
       const SizedBox(height: 10,),
        TextField(
           decoration: InputDecoration(
           prefixIcon: const Icon(Icons.lock_rounded),
-         hintText: "Taper votre mot de passe",
+         hintText: "Mot de passe",
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(20),
         ),
@@ -265,25 +170,20 @@ late AnimationController controller;
        const SizedBox(height: 10,),
        ElevatedButton(
          style: ElevatedButton.styleFrom(
-           primary: Colors.amber,
+           primary: Colors.deepOrange,
            shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(10))
          ),
          onPressed: (){
           FirestoreHelper().connect(mail, password).then((value){
-
             setState(() {
               FirestoreHelper().getIdenfiant().then((value){
                 setState(() {
                   uid = value;
                 });
-
                 FirestoreHelper().getUtilisateur(uid).then((value){
                   setState(() {
-
-
                     monProfil = value;
                   });
-
                 });
               });
             });
@@ -292,22 +192,15 @@ late AnimationController controller;
                 return DashBoard(uid: uid);
               }
               ));
-
           }).onError((error, stackTrace){
             print("Problème de connexion");
           });
-
          }, 
          child: const Text("Connexion"),
-
-
-
          ),
-
          const SizedBox(height: 10,),
-
          InkWell(
-           child: const Text("Inscription",style: TextStyle(color: Colors.blue),),
+           child: const Text("Inscription",style: TextStyle(color: Colors.amber),),
            onTap: (){
               Navigator.push(context, MaterialPageRoute(
                 builder: (context){
@@ -316,12 +209,7 @@ late AnimationController controller;
                 ));
            },
          )
-
-         
     ],
-
   );
-
-
   }
 }

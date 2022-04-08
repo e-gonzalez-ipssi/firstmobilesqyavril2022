@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Utilisateur{
@@ -7,9 +6,6 @@ class Utilisateur{
     late String prenom;
     String? logo;
 
-
-
-
     Utilisateur(DocumentSnapshot snapshot){
       uid = snapshot.id;
       Map<String,dynamic> map = snapshot.data() as Map<String,dynamic>;
@@ -17,8 +13,6 @@ class Utilisateur{
       prenom = map["PRENOM"];
       uid = map["UID"];
       logo = map["LOGO"];
-
-
     }
 
     Utilisateur.vide(){
@@ -28,8 +22,14 @@ class Utilisateur{
       logo="";
     }
 
-
-
-
+    Map<String, dynamic> toMap() {
+      Map<String, dynamic> map;
+      return map = {
+        'NOM': nom,
+        'PRENOM': prenom,
+        'UID': uid,
+        'LOGO': logo,
+      };
+    }
 
 }
